@@ -10,13 +10,15 @@ $mysql_user = $argv[3];
 $mysql_pass = $argv[4];
 $mysql_db = 'performance_schema';
 
+$cur_iteration = 0;
+
 ### setting default 
 $count = empty($argv[5]) ? 100000 : $argv[5];
 
 if ( empty($mysql_host) ||  empty($mysql_port) ||  empty($mysql_user) ||  empty($mysql_pass))
 {
     print "USAGE: php -q $argv[0] <mysql_host> <mysql_port> <mysql_user> <mysql_pass> [count]\n";
-    exit 1;
+    exit(1);
 }
 
 // We store each request time, so be carefull with memory consumption
@@ -25,7 +27,7 @@ $timings = array();
 $time_overall = 0;
 
 
-function print_pct($timings)
+function print_pct($timings, $i)
 {
     sort($timings);
     // please note that math is far from being prefect but it works
@@ -39,10 +41,10 @@ function print_pct($timings)
 // We user single connection to avoid additional overheads
 $mysql_conn = mysqli_connect($mysql_host, $mysql_user, $mysql_pass, $mysql_db, $mysql_port) or die("Can't connect to MySQL, please check connection parameters");
 $test_start = microtime(true);
-for ($i = 0; $i < $count; $i++)
+while ($cur_iteration < $count)
 {
     // fancy output helps with really long tests
-    if (($i % 10000) == 0) print ".";
+    if (($cur_iteration % 10000) == 0) print ".";
     $start = microtime(true);
     $r = mysqli_query($mysql_conn, "SELECT 1");
     $a = mysqli_fetch_array($r);
@@ -51,11 +53,12 @@ for ($i = 0; $i < $count; $i++)
     $timings[] = $diff;
     $time_overall += $diff;
     // It's convenent to see current results during really long (10M+) tests
-    if (($i % 100000) == 0)
+    if (($cur_iteration % 100000) == 0)
     {
-	    print "Digest for itteration {$i}: \n";
-	    print_pct($timings);
+        print "Digest for itteration {$cur_iteration}: \n";
+        print_pct($timings, $cur_iteration);
     }
+    $cur_iteration += 1;
 }
 $test_stop = microtime(true);
 
@@ -67,7 +70,7 @@ print "Host: {$mysql_host}, queries: {$count} AVG latency (seconds): {$avg_laten
 print "Test time: {$test_time}, run time: {$time_overall}, overhead: {$overhead_time}\n";
 
 sort($timings);
-print_pct($timings);
+print_pct($timings, $cur_iteration);
 
 ?>
 
