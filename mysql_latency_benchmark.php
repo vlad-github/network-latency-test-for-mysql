@@ -16,7 +16,7 @@ $count = empty($argv[5]) ? 100000 : $argv[5];
 if ( empty($mysql_host) ||  empty($mysql_port) ||  empty($mysql_user) ||  empty($mysql_pass))
 {
     print "USAGE: php -q $argv[0] <mysql_host> <mysql_port> <mysql_user> <mysql_pass> [count]\n";
-    exit 1;
+    exit;
 }
 
 // We store each request time, so be carefull with memory consumption
