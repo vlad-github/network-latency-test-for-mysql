@@ -42,7 +42,7 @@ $test_start = microtime(true);
 for ($i = 0; $i < $count; $i++)
 {
     // fancy output helps with really long tests
-    if (($i != 0 ) && (($i % 10000) == 0)) print ".";
+    if (($i % 10000) == 0) print ".";
     $start = microtime(true);
     $r = mysqli_query($mysql_conn, "SELECT 1");
     $a = mysqli_fetch_array($r);
@@ -51,7 +51,7 @@ for ($i = 0; $i < $count; $i++)
     $timings[] = $diff;
     $time_overall += $diff;
     // It's convenent to see current results during really long (10M+) tests
-    if (($i % 100000) == 0)
+    if (($i != 0 ) && ($i % 100000) == 0)
     {
 	    print "Digest for itteration {$i}: \n";
 	    print_pct($timings);
