@@ -25,13 +25,13 @@ $timings = array();
 $time_overall = 0;
 
 
-function print_pct($timings)
+function print_pct(&$timings, $count)
 {
     sort($timings);
     // please note that math is far from being prefect but it works
     foreach( [100, 99.999, 99.995, 99.99, 99.9, 99, 95, 80, 50, 1] as $pct)
     {
-        $pos = ceil($i * (float)$pct / 100) - 1;
+        $pos = ceil($count * (float)$pct / 100) - 1;
         echo "$pct,\t$pos,\t{$timings[$pos]}\n";
     }
 }
@@ -54,7 +54,7 @@ for ($i = 0; $i < $count; $i++)
     if (($i != 0 ) && ($i % 100000) == 0)
     {
 	    print "Digest for itteration {$i}: \n";
-	    print_pct($timings);
+	    print_pct($timings, $i);
     }
 }
 $test_stop = microtime(true);
@@ -66,8 +66,7 @@ $time_overall = number_format($time_overall, 6);
 print "Host: {$mysql_host}, queries: {$count} AVG latency (seconds): {$avg_latency}\n";
 print "Test time: {$test_time}, run time: {$time_overall}, overhead: {$overhead_time}\n";
 
-sort($timings);
-print_pct($timings);
+print_pct($timings, $i);
 
 ?>
 
