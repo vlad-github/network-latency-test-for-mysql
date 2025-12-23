@@ -42,7 +42,7 @@ $test_start = microtime(true);
 for ($i = 0; $i < $count; $i++)
 {
     // fancy output helps with really long tests
-    if (($i % 10000) == 0) print ".";
+    if (($i != 0 ) && (($i % 10000) == 0)) print ".";
     $start = microtime(true);
     $r = mysqli_query($mysql_conn, "SELECT 1");
     $a = mysqli_fetch_array($r);
