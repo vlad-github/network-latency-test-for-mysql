@@ -1,5 +1,6 @@
 # network-latency-test-for-mysql
-ubuntu how to
+ubuntu howto
+```
 apt install -y php-cli php-mysql
 screen -S test
 mysql>
@@ -8,3 +9,4 @@ mysql> GRANT ALL PRIVILEGES ON *.* TO 'test'@'%';
 mysql> CREATE DATABASE test;
 
 php -q mysql_latency_benchmark.php <remote_host> 3306 test test 
+```
