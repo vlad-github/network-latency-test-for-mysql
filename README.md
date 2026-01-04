@@ -1,4 +1,4 @@
-usage: mysql_latency_benchmark.php <db_host> <db_port> <db_user> <db_pass> [number of queries]
+**usage**: mysql_latency_benchmark.php <db_host> <db_port> <db_user> <db_pass> [number of queries]
 
 # network-latency-test-for-mysql
 ubuntu howto
